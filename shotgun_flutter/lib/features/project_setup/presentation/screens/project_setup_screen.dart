@@ -53,7 +53,7 @@ class ProjectSetupScreen extends ConsumerWidget {
     return Container(
       padding: const EdgeInsets.all(16.0),
       decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.surfaceVariant,
+        color: Theme.of(context).colorScheme.surfaceContainerHighest,
         border: Border(
           bottom: BorderSide(
             color: Theme.of(context).dividerColor,
@@ -101,7 +101,7 @@ class ProjectSetupScreen extends ConsumerWidget {
             if (excludedPaths.isNotEmpty)
               Container(
                 padding: const EdgeInsets.all(8.0),
-                color: Colors.orange.withOpacity(0.1),
+                color: Colors.orange.withValues(alpha: 0.1),
                 child: Row(
                   children: [
                     const Icon(Icons.info_outline, color: Colors.orange, size: 20),
@@ -180,7 +180,7 @@ class ProjectSetupScreen extends ConsumerWidget {
     return Container(
       padding: const EdgeInsets.all(16.0),
       decoration: BoxDecoration(
-        color: Colors.green.withOpacity(0.1),
+        color: Colors.green.withValues(alpha: 0.1),
         border: const Border(
           top: BorderSide(color: Colors.green),
         ),
