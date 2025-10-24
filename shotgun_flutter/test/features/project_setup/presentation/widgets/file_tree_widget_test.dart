@@ -175,5 +175,156 @@ void main() {
       expect(find.text('child.txt'), findsOneWidget);
       expect(find.byIcon(Icons.folder_open), findsOneWidget);
     });
+
+    testWidgets('should display search bar', (tester) async {
+      const nodes = [
+        FileNode(
+          name: 'test.txt',
+          path: '/test.txt',
+          relPath: 'test.txt',
+          isDir: false,
+          isGitignored: false,
+          isCustomIgnored: false,
+        ),
+      ];
+
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Scaffold(
+            body: FileTreeWidget(
+              nodes: nodes,
+              onToggle: (_) {},
+            ),
+          ),
+        ),
+      );
+
+      expect(find.byType(TextField), findsOneWidget);
+      expect(find.text('Search files... (Cmd+F)'), findsOneWidget);
+    });
+
+    testWidgets('should filter files on search', (tester) async {
+      const nodes = [
+        FileNode(
+          name: 'test.dart',
+          path: '/test.dart',
+          relPath: 'test.dart',
+          isDir: false,
+          isGitignored: false,
+          isCustomIgnored: false,
+        ),
+        FileNode(
+          name: 'main.dart',
+          path: '/main.dart',
+          relPath: 'main.dart',
+          isDir: false,
+          isGitignored: false,
+          isCustomIgnored: false,
+        ),
+      ];
+
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Scaffold(
+            body: FileTreeWidget(
+              nodes: nodes,
+              onToggle: (_) {},
+            ),
+          ),
+        ),
+      );
+
+      // Initially both files should be visible
+      expect(find.text('test.dart'), findsOneWidget);
+      expect(find.text('main.dart'), findsOneWidget);
+
+      // Enter search query
+      await tester.enterText(find.byType(TextField), 'test');
+      await tester.pumpAndSettle();
+
+      // Only test.dart should be visible
+      expect(find.text('test.dart'), findsOneWidget);
+      expect(find.text('main.dart'), findsNothing);
+    });
+
+    testWidgets('should clear search on clear button tap', (tester) async {
+      const nodes = [
+        FileNode(
+          name: 'test.dart',
+          path: '/test.dart',
+          relPath: 'test.dart',
+          isDir: false,
+          isGitignored: false,
+          isCustomIgnored: false,
+        ),
+        FileNode(
+          name: 'main.dart',
+          path: '/main.dart',
+          relPath: 'main.dart',
+          isDir: false,
+          isGitignored: false,
+          isCustomIgnored: false,
+        ),
+      ];
+
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Scaffold(
+            body: FileTreeWidget(
+              nodes: nodes,
+              onToggle: (_) {},
+            ),
+          ),
+        ),
+      );
+
+      // Enter search query
+      await tester.enterText(find.byType(TextField), 'test');
+      await tester.pumpAndSettle();
+
+      // Only test.dart should be visible
+      expect(find.text('test.dart'), findsOneWidget);
+      expect(find.text('main.dart'), findsNothing);
+
+      // Tap clear button
+      await tester.tap(find.byIcon(Icons.clear));
+      await tester.pumpAndSettle();
+
+      // Both files should be visible again
+      expect(find.text('test.dart'), findsOneWidget);
+      expect(find.text('main.dart'), findsOneWidget);
+    });
+
+    testWidgets('should show empty message when search has no results', (tester) async {
+      const nodes = [
+        FileNode(
+          name: 'test.dart',
+          path: '/test.dart',
+          relPath: 'test.dart',
+          isDir: false,
+          isGitignored: false,
+          isCustomIgnored: false,
+        ),
+      ];
+
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Scaffold(
+            body: FileTreeWidget(
+              nodes: nodes,
+              onToggle: (_) {},
+            ),
+          ),
+        ),
+      );
+
+      // Enter non-matching search query
+      await tester.enterText(find.byType(TextField), 'nonexistent');
+      await tester.pumpAndSettle();
+
+      // Should show empty message
+      expect(find.text('No files to display'), findsOneWidget);
+      expect(find.text('test.dart'), findsNothing);
+    });
   });
 }
