@@ -1,0 +1,65 @@
+# Название workflow (будет видно в GitHub)
+name: Flutter CI
+
+# Когда запускать этот workflow?
+on:
+  # При каждом push в ветки main или develop
+  push:
+    branches: [ main, develop ]
+
+  # При создании Pull Request в main или develop
+  pull_request:
+    branches: [ main, develop ]
+
+# Задачи, которые нужно выполнить
+jobs:
+  # Название задачи: "test"
+  test:
+    # На какой операционной системе запускать
+    # ubuntu-latest = Linux (самый быстрый и дешевый)
+    runs-on: ubuntu-latest
+
+    # Шаги выполнения
+    steps:
+      # Шаг 1: Скачать код из репозитория
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Шаг 2: Установить Flutter
+      - name: Install Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.24.3'  # Версия Flutter
+          channel: 'stable'           # Канал: stable, beta, dev
+
+      # Шаг 3: Показать версию Flutter (для отладки)
+      - name: Show Flutter version
+        run: flutter --version
+
+      # Шаг 4: Установить зависимости из pubspec.yaml
+      - name: Install dependencies
+        run: flutter pub get
+
+      # Шаг 5: Сгенерировать код (Freezed, Mockito, etc.)
+      - name: Generate code
+        run: flutter pub run build_runner build --delete-conflicting-outputs
+
+      # Шаг 6: Проверить код на ошибки
+      - name: Analyze code
+        run: flutter analyze
+
+      # Шаг 7: Запустить тесты
+      - name: Run tests
+        run: flutter test
+
+      # Шаг 8: Генерировать coverage (опционально)
+      - name: Generate coverage
+        run: flutter test --coverage
+
+      # Шаг 9: Загрузить coverage в Codecov (опционально)
+      # Codecov - это сервис для визуализации покрытия кода
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v3
+        with:
+          files: ./coverage/lcov.info
+          fail_ci_if_error: false  # Не падать если Codecov недоступен
