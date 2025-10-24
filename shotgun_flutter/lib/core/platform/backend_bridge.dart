@@ -14,6 +14,18 @@ typedef FreeStringC = ffi.Void Function(ffi.Pointer<Utf8>);
 /// Dart function typedef for FreeString
 typedef FreeStringDart = void Function(ffi.Pointer<Utf8>);
 
+/// C function typedef for SplitDiffFFI
+typedef SplitDiffFFIC = ffi.Pointer<Utf8> Function(
+  ffi.Pointer<Utf8>,
+  ffi.Int,
+);
+
+/// Dart function typedef for SplitDiffFFI
+typedef SplitDiffFFIDart = ffi.Pointer<Utf8> Function(
+  ffi.Pointer<Utf8>,
+  int,
+);
+
 /// Bridge to communicate with Go backend via FFI.
 ///
 /// This class handles:
@@ -35,6 +47,7 @@ typedef FreeStringDart = void Function(ffi.Pointer<Utf8>);
 class BackendBridge {
   late ffi.DynamicLibrary _lib;
   late ListFilesFFIDart _listFiles;
+  late SplitDiffFFIDart _splitDiff;
   late FreeStringDart _freeString;
 
   /// Creates a new BackendBridge instance.
@@ -45,6 +58,9 @@ class BackendBridge {
     _lib = _loadLibrary();
     _listFiles = _lib.lookupFunction<ListFilesFFIC, ListFilesFFIDart>(
       'ListFilesFFI',
+    );
+    _splitDiff = _lib.lookupFunction<SplitDiffFFIC, SplitDiffFFIDart>(
+      'SplitDiffFFI',
     );
     _freeString = _lib.lookupFunction<FreeStringC, FreeStringDart>(
       'FreeString',
@@ -105,6 +121,39 @@ class BackendBridge {
 
     // Free memory
     malloc.free(pathPtr);
+    _freeString(resultPtr);
+
+    return result;
+  }
+
+  /// Splits a large diff into smaller patches.
+  ///
+  /// Calls the Go backend's `SplitDiffFFI` function via FFI.
+  ///
+  /// Parameters:
+  /// - [diff]: The raw Git diff content
+  /// - [lineLimit]: Maximum number of lines per patch
+  ///
+  /// Returns:
+  /// - JSON string with array of split patches or error object
+  ///
+  /// The returned JSON has two possible formats:
+  /// 1. Success: `["patch1...", "patch2...", ...]`
+  /// 2. Error: `{"error": "error message"}`
+  ///
+  /// Memory is automatically freed after the call.
+  String splitDiff(String diff, int lineLimit) {
+    // Convert Dart string to C string
+    final diffPtr = diff.toNativeUtf8();
+
+    // Call Go function
+    final resultPtr = _splitDiff(diffPtr, lineLimit);
+
+    // Convert C string to Dart string
+    final result = resultPtr.toDartString();
+
+    // Free memory
+    malloc.free(diffPtr);
     _freeString(resultPtr);
 
     return result;

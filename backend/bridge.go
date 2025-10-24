@@ -32,6 +32,26 @@ func ListFilesFFI(pathCStr *C.char) *C.char {
 	return C.CString(string(result))
 }
 
+//export SplitDiffFFI
+func SplitDiffFFI(diffCStr *C.char, lineLimitC C.int) *C.char {
+	diff := C.GoString(diffCStr)
+	lineLimit := int(lineLimitC)
+
+	app := NewApp()
+	splits, err := app.SplitShotgunDiff(diff, lineLimit)
+	if err != nil {
+		return C.CString(marshalError(err))
+	}
+
+	// Marshal to JSON
+	result, err := json.Marshal(splits)
+	if err != nil {
+		return C.CString(marshalError(err))
+	}
+
+	return C.CString(string(result))
+}
+
 //export FreeString
 func FreeString(str *C.char) {
 	C.free(unsafe.Pointer(str))
