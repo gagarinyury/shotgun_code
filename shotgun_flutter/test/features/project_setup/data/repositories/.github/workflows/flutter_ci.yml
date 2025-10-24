@@ -1,0 +1,43 @@
+name: Flutter CI
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.16.0'
+          channel: 'stable'
+
+      - name: Install dependencies
+        run: |
+          cd shotgun_flutter
+          flutter pub get
+
+      - name: Run code generation
+        run: |
+          cd shotgun_flutter
+          flutter pub run build_runner build --delete-conflicting-outputs
+
+      - name: Analyze code
+        run: |
+          cd shotgun_flutter
+          flutter analyze
+
+      - name: Run tests
+        run: |
+          cd shotgun_flutter
+          flutter test --coverage
+
+      - name: Upload coverage
+        uses: codecov/codecov-action@v3
+        with:
+          files: ./shotgun_flutter/coverage/lcov.info

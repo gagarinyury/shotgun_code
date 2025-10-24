@@ -19,6 +19,42 @@ abstract class BackendDataSource {
   /// Throws:
   /// - [BackendException] if the backend returns an error
   Future<List<FileNodeModel>> listFiles(String path);
+
+  /// Generates context from selected files in the project.
+  ///
+  /// Returns a stream that emits progress updates and the final context.
+  ///
+  /// Parameters:
+  /// - [rootDir]: The root directory of the project
+  /// - [excludedPaths]: List of paths to exclude from context generation
+  ///
+  /// Returns:
+  /// - Stream of Maps containing progress or final context data
+  ///
+  /// Throws:
+  /// - [BackendException] if the backend returns an error
+  Stream<Map<String, dynamic>> generateContextStream({
+    required String rootDir,
+    required List<String> excludedPaths,
+  });
+
+  /// Sets whether to use .gitignore rules for file exclusion.
+  ///
+  /// Parameters:
+  /// - [value]: true to enable .gitignore, false to disable
+  ///
+  /// Throws:
+  /// - [BackendException] if the backend returns an error
+  Future<void> setUseGitignore(bool value);
+
+  /// Sets whether to use custom ignore rules for file exclusion.
+  ///
+  /// Parameters:
+  /// - [value]: true to enable custom ignore, false to disable
+  ///
+  /// Throws:
+  /// - [BackendException] if the backend returns an error
+  Future<void> setUseCustomIgnore(bool value);
 }
 
 /// Implementation of [BackendDataSource] using FFI bridge to Go backend.
@@ -70,5 +106,33 @@ class BackendDataSourceImpl implements BackendDataSource {
       // Wrap other exceptions
       throw BackendException('Failed to list files: $e');
     }
+  }
+
+  @override
+  Stream<Map<String, dynamic>> generateContextStream({
+    required String rootDir,
+    required List<String> excludedPaths,
+  }) async* {
+    // TODO: Implement when Go backend is ready with streaming context generation
+    // For now, return a stub implementation
+    throw UnimplementedError(
+      'generateContextStream not yet implemented - waiting for Go backend streaming API',
+    );
+  }
+
+  @override
+  Future<void> setUseGitignore(bool value) async {
+    // TODO: Implement when Go backend is ready
+    // For now, this is a no-op stub
+    // The actual implementation will call bridge.setUseGitignore(value)
+    return;
+  }
+
+  @override
+  Future<void> setUseCustomIgnore(bool value) async {
+    // TODO: Implement when Go backend is ready
+    // For now, this is a no-op stub
+    // The actual implementation will call bridge.setUseCustomIgnore(value)
+    return;
   }
 }

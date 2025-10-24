@@ -13,6 +13,12 @@ import 'package:dio/src/options.dart' as _i2;
 import 'package:dio/src/response.dart' as _i6;
 import 'package:dio/src/transformer.dart' as _i4;
 import 'package:mockito/mockito.dart' as _i1;
+import 'package:mockito/src/dummies.dart' as _i11;
+import 'package:shotgun_flutter/core/platform/backend_bridge.dart' as _i10;
+import 'package:shotgun_flutter/features/project_setup/data/datasources/backend_datasource.dart'
+    as _i12;
+import 'package:shotgun_flutter/features/project_setup/data/models/file_node_model.dart'
+    as _i13;
 
 // ignore_for_file: type=lint
 // ignore_for_file: avoid_redundant_argument_values
@@ -803,4 +809,81 @@ class MockDio extends _i1.Mock implements _i7.Dio {
             ),
           )
           as _i7.Dio);
+}
+
+/// A class which mocks [BackendBridge].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockBackendBridge extends _i1.Mock implements _i10.BackendBridge {
+  MockBackendBridge() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  String listFiles(String? path) =>
+      (super.noSuchMethod(
+            Invocation.method(#listFiles, [path]),
+            returnValue: _i11.dummyValue<String>(
+              this,
+              Invocation.method(#listFiles, [path]),
+            ),
+          )
+          as String);
+
+  @override
+  void dispose() => super.noSuchMethod(
+    Invocation.method(#dispose, []),
+    returnValueForMissingStub: null,
+  );
+}
+
+/// A class which mocks [BackendDataSource].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockBackendDataSource extends _i1.Mock implements _i12.BackendDataSource {
+  MockBackendDataSource() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  _i8.Future<List<_i13.FileNodeModel>> listFiles(String? path) =>
+      (super.noSuchMethod(
+            Invocation.method(#listFiles, [path]),
+            returnValue: _i8.Future<List<_i13.FileNodeModel>>.value(
+              <_i13.FileNodeModel>[],
+            ),
+          )
+          as _i8.Future<List<_i13.FileNodeModel>>);
+
+  @override
+  _i8.Stream<Map<String, dynamic>> generateContextStream({
+    required String? rootDir,
+    required List<String>? excludedPaths,
+  }) =>
+      (super.noSuchMethod(
+            Invocation.method(#generateContextStream, [], {
+              #rootDir: rootDir,
+              #excludedPaths: excludedPaths,
+            }),
+            returnValue: _i8.Stream<Map<String, dynamic>>.empty(),
+          )
+          as _i8.Stream<Map<String, dynamic>>);
+
+  @override
+  _i8.Future<void> setUseGitignore(bool? value) =>
+      (super.noSuchMethod(
+            Invocation.method(#setUseGitignore, [value]),
+            returnValue: _i8.Future<void>.value(),
+            returnValueForMissingStub: _i8.Future<void>.value(),
+          )
+          as _i8.Future<void>);
+
+  @override
+  _i8.Future<void> setUseCustomIgnore(bool? value) =>
+      (super.noSuchMethod(
+            Invocation.method(#setUseCustomIgnore, [value]),
+            returnValue: _i8.Future<void>.value(),
+            returnValueForMissingStub: _i8.Future<void>.value(),
+          )
+          as _i8.Future<void>);
 }

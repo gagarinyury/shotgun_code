@@ -61,17 +61,17 @@ class BackendBridge {
   /// Throws [UnsupportedError] if platform is not supported.
   ffi.DynamicLibrary _loadLibrary() {
     if (Platform.isLinux) {
-      return ffi.DynamicLibrary.open('libshotgun.so');
+      return ffi.DynamicLibrary.open('linux/libshotgun.so');
     } else if (Platform.isMacOS) {
       // Detect architecture
       final arch = ffi.Abi.current().toString();
       if (arch.contains('arm64') || arch.contains('Arm64')) {
-        return ffi.DynamicLibrary.open('libshotgun_arm64.dylib');
+        return ffi.DynamicLibrary.open('macos/libshotgun_arm64.dylib');
       } else {
-        return ffi.DynamicLibrary.open('libshotgun_amd64.dylib');
+        return ffi.DynamicLibrary.open('macos/libshotgun_amd64.dylib');
       }
     } else if (Platform.isWindows) {
-      return ffi.DynamicLibrary.open('shotgun.dll');
+      return ffi.DynamicLibrary.open('windows/shotgun.dll');
     }
     throw UnsupportedError(
       'Platform ${Platform.operatingSystem} is not supported',
