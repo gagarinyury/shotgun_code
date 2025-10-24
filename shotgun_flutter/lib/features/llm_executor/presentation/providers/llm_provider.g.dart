@@ -7,7 +7,7 @@ part of 'llm_provider.dart';
 // **************************************************************************
 
 String _$generateDiffWithLLMHash() =>
-    r'1d6aecd86ecad244f9e46b0d7ca061b2d57a38f7';
+    r'3acc2e750bfa7596b3fd777749121cb25f078b66';
 
 /// See also [generateDiffWithLLM].
 @ProviderFor(generateDiffWithLLM)
@@ -25,7 +25,7 @@ final generateDiffWithLLMProvider =
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 typedef GenerateDiffWithLLMRef = AutoDisposeProviderRef<GenerateDiffWithLLM>;
-String _$cancelGenerationHash() => r'746393396b179fc6d0e3c44a7dfb49399f81fe0d';
+String _$cancelGenerationHash() => r'7c747bda8970e209d11417938a0b40f00d3985d9';
 
 /// See also [cancelGeneration].
 @ProviderFor(cancelGeneration)
@@ -42,7 +42,7 @@ final cancelGenerationProvider = AutoDisposeProvider<CancelGeneration>.internal(
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 typedef CancelGenerationRef = AutoDisposeProviderRef<CancelGeneration>;
-String _$lLMNotifierHash() => r'5b9ddfdb067b75c53f80c6b8c87df4f35426beab';
+String _$lLMNotifierHash() => r'd7bc369abd7d67ed15ab6fa74914fab5b8729501';
 
 /// Provider for LLM generation state management
 ///

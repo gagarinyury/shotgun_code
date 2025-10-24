@@ -29,7 +29,9 @@
       "Bash(awk:*)",
       "Bash(xargs kill:*)",
       "Bash(mkdir:*)",
-      "Bash(dart:*)"
+      "Bash(dart:*)",
+      "Bash(then echo \"Coverage file generated ✅\")",
+      "Bash(go build:*)"
     ],
     "deny": [],
     "ask": []

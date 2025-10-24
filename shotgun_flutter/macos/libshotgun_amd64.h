@@ -88,6 +88,7 @@ extern "C" {
 #endif
 
 extern char* ListFilesFFI(char* pathCStr);
+extern char* SplitDiffFFI(char* diffCStr, int lineLimitC);
 extern void FreeString(char* str);
 
 #ifdef __cplusplus

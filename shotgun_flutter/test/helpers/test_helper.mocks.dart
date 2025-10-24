@@ -842,6 +842,17 @@ class MockBackendBridge extends _i1.Mock implements _i11.BackendBridge {
           as String);
 
   @override
+  String splitDiff(String? diff, int? lineLimit) =>
+      (super.noSuchMethod(
+            Invocation.method(#splitDiff, [diff, lineLimit]),
+            returnValue: _i12.dummyValue<String>(
+              this,
+              Invocation.method(#splitDiff, [diff, lineLimit]),
+            ),
+          )
+          as String);
+
+  @override
   void dispose() => super.noSuchMethod(
     Invocation.method(#dispose, []),
     returnValueForMissingStub: null,
