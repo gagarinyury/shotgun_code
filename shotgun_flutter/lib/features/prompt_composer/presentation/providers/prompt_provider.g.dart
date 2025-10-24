@@ -142,7 +142,7 @@ final saveCustomRulesProvider = AutoDisposeProvider<SaveCustomRules>.internal(
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 typedef SaveCustomRulesRef = AutoDisposeProviderRef<SaveCustomRules>;
-String _$promptNotifierHash() => r'630b204042856dc2a5b972e14428c1c25ef402ef';
+String _$promptNotifierHash() => r'7e4d68666a0f8d2e40a4bcdda24488925171b46b';
 
 /// Notifier for managing prompt composition state.
 ///
