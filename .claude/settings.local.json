@@ -1,0 +1,27 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(flutter pub run build_runner build:*)",
+      "Bash(flutter test:*)",
+      "Bash(if [ -f coverage/lcov.info ])",
+      "Bash(then echo \"Coverage file generated\")",
+      "Bash(else echo \"Coverage file not found\")",
+      "Bash(fi)",
+      "Bash(flutter analyze:*)",
+      "Bash(if [ -f /Users/yurygagarin/code/shotgun_code/shotgun_flutter/coverage/lcov.info ])",
+      "Bash(cat:*)",
+      "Bash(flutter --version:*)",
+      "Bash(cd:*)",
+      "Bash(go env:*)",
+      "Bash(go version:*)",
+      "Bash(chmod:*)",
+      "Bash(./build_lib.sh:*)",
+      "Bash(ln:*)",
+      "Bash(tee:*)",
+      "Read(//private/tmp/**)",
+      "Bash(git add:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

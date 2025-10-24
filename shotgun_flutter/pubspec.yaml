@@ -1,0 +1,53 @@
+name: shotgun_flutter
+description: "Cross-platform Flutter UI for Shotgun Code"
+publish_to: 'none'
+version: 0.1.0
+
+environment:
+  sdk: ^3.9.2
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  # State Management
+  flutter_riverpod: ^2.4.0
+  riverpod_annotation: ^2.3.0
+
+  # Functional Programming
+  dartz: ^0.10.1
+
+  # Value Equality
+  equatable: ^2.0.5
+
+  # Immutable Models
+  freezed_annotation: ^2.4.0
+  json_annotation: ^4.8.0
+
+  # Networking
+  dio: ^5.4.0
+
+  # Platform
+  ffi: ^2.1.0
+
+  # Utils
+  path_provider: ^2.1.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  # Testing
+  mockito: ^5.4.0
+
+  # Code Generation
+  build_runner: ^2.4.0
+  freezed: ^2.4.0
+  json_serializable: ^6.7.0
+  riverpod_generator: ^2.3.0
+
+  # Linting
+  flutter_lints: ^5.0.0
+
+flutter:
+  uses-material-design: true
