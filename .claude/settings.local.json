@@ -19,7 +19,17 @@
       "Bash(ln:*)",
       "Bash(tee:*)",
       "Read(//private/tmp/**)",
-      "Bash(git add:*)"
+      "Bash(git add:*)",
+      "Bash(git commit -m \"$(cat <<''EOF''\nfeat: Phase 1 - Go Backend FFI Integration (partial)\n\n## Phase 0 Complete ✅\n- Flutter project with Clean Architecture structure\n- Core error handling (Failures, Exceptions)\n- Logger with test coverage (100%)\n- CI/CD pipeline configured\n- Documentation (ARCHITECTURE.md, CONTRIBUTING.md)\n- All tests passing (8/8)\n\n## Phase 1 Progress (40% complete)\n### Completed ✅\n- Go FFI bridge (backend/bridge.go) with C exports\n- Build script for cross-platform compilation\n- macOS shared libraries built (arm64 + amd64)\n- Domain layer:\n  - FileNode entity with Equatable\n  - ProjectRepository interface\n- Data layer:\n  - FileNodeModel with Freezed + JSON serialization\n  - BackendBridge FFI wrapper\n  - BackendDataSource implementation\n  - ProjectRepositoryImpl with Either pattern\n\n### Not Completed ❌\n- Unit tests for new components\n- Integration tests\n- Memory leak verification\n- Flutter analyze errors (14 issues)\n\n## Technical Details\n- Go backend: ListFilesFFI exported via CGo\n- FFI: Platform-specific library loading (macOS/Linux/Windows)\n- Clean Architecture: Domain ← Data separation maintained\n- Error handling: Exception → Failure conversion\n\n## Files Changed: 162 files, 13,867 insertions\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude <noreply@anthropic.com>\nEOF\n)\")",
+      "Bash(flutter pub get:*)",
+      "Bash(tree:*)",
+      "Bash(test:*)",
+      "Bash(git commit:*)",
+      "Bash(git push:*)",
+      "Bash(awk:*)",
+      "Bash(xargs kill:*)",
+      "Bash(mkdir:*)",
+      "Bash(dart:*)"
     ],
     "deny": [],
     "ask": []
