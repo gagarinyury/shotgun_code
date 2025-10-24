@@ -60,9 +60,43 @@ class PatchRepositoryImpl implements PatchRepository {
     bool dryRun = false,
   }) async {
     try {
-      // TODO: Implement after adding ApplyPatchFFI to Go backend
-      // For now, return success
-      return Right(ApplyResult.success());
+      final jsonString = bridge.applyPatch(
+        patch.content,
+        patch.projectPath,
+        dryRun: dryRun,
+      );
+      final decoded = jsonDecode(jsonString);
+
+      // Check for error response
+      if (decoded is Map && decoded.containsKey('error')) {
+        throw BackendException(decoded['error'] as String);
+      }
+
+      // Parse apply result
+      if (decoded is Map) {
+        final success = decoded['success'] as bool;
+        final conflictsData = decoded['conflicts'] as List<dynamic>? ?? [];
+
+        if (success) {
+          return Right(ApplyResult.success());
+        } else {
+          // Parse conflicts from strings
+          final conflicts = conflictsData
+              .map((c) => Conflict(
+                    filePath: 'unknown',
+                    lineNumber: 0,
+                    theirVersion: c.toString(),
+                    ourVersion: '',
+                  ))
+              .toList();
+
+          return Right(ApplyResult.failure(conflicts: conflicts));
+        }
+      }
+
+      throw const BackendException('Unexpected response format');
+    } on BackendException catch (e) {
+      return Left(BackendFailure(e.message));
     } catch (e) {
       return Left(BackendFailure('Failed to apply patch: $e'));
     }
@@ -71,9 +105,13 @@ class PatchRepositoryImpl implements PatchRepository {
   @override
   Future<Either<Failure, List<Conflict>>> detectConflicts(Patch patch) async {
     try {
-      // TODO: Implement after adding conflict detection to Go backend
-      // For now, return empty list
-      return const Right([]);
+      // Use dry-run to detect conflicts
+      final result = await applyPatch(patch, dryRun: true);
+
+      return result.fold(
+        (failure) => Left(failure),
+        (applyResult) => Right(applyResult.conflicts),
+      );
     } catch (e) {
       return Left(BackendFailure('Failed to detect conflicts: $e'));
     }

@@ -89,6 +89,7 @@ extern "C" {
 
 extern char* ListFilesFFI(char* pathCStr);
 extern char* SplitDiffFFI(char* diffCStr, int lineLimitC);
+extern char* ApplyPatchFFI(char* patchCStr, char* projectPathCStr, int dryRunC);
 extern void FreeString(char* str);
 
 #ifdef __cplusplus

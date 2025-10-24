@@ -31,7 +31,8 @@
       "Bash(mkdir:*)",
       "Bash(dart:*)",
       "Bash(then echo \"Coverage file generated ✅\")",
-      "Bash(go build:*)"
+      "Bash(go build:*)",
+      "Bash(else echo \"Coverage file not found ❌\")"
     ],
     "deny": [],
     "ask": []

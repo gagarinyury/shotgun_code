@@ -26,6 +26,20 @@ typedef SplitDiffFFIDart = ffi.Pointer<Utf8> Function(
   int,
 );
 
+/// C function typedef for ApplyPatchFFI
+typedef ApplyPatchFFIC = ffi.Pointer<Utf8> Function(
+  ffi.Pointer<Utf8>,
+  ffi.Pointer<Utf8>,
+  ffi.Int,
+);
+
+/// Dart function typedef for ApplyPatchFFI
+typedef ApplyPatchFFIDart = ffi.Pointer<Utf8> Function(
+  ffi.Pointer<Utf8>,
+  ffi.Pointer<Utf8>,
+  int,
+);
+
 /// Bridge to communicate with Go backend via FFI.
 ///
 /// This class handles:
@@ -48,6 +62,7 @@ class BackendBridge {
   late ffi.DynamicLibrary _lib;
   late ListFilesFFIDart _listFiles;
   late SplitDiffFFIDart _splitDiff;
+  late ApplyPatchFFIDart _applyPatch;
   late FreeStringDart _freeString;
 
   /// Creates a new BackendBridge instance.
@@ -61,6 +76,9 @@ class BackendBridge {
     );
     _splitDiff = _lib.lookupFunction<SplitDiffFFIC, SplitDiffFFIDart>(
       'SplitDiffFFI',
+    );
+    _applyPatch = _lib.lookupFunction<ApplyPatchFFIC, ApplyPatchFFIDart>(
+      'ApplyPatchFFI',
     );
     _freeString = _lib.lookupFunction<FreeStringC, FreeStringDart>(
       'FreeString',
@@ -154,6 +172,42 @@ class BackendBridge {
 
     // Free memory
     malloc.free(diffPtr);
+    _freeString(resultPtr);
+
+    return result;
+  }
+
+  /// Applies a patch to the project.
+  ///
+  /// Calls the Go backend's `ApplyPatchFFI` function via FFI.
+  ///
+  /// Parameters:
+  /// - [patch]: The patch content to apply
+  /// - [projectPath]: Absolute path to the project
+  /// - [dryRun]: If true, only check if patch can be applied without actually applying it
+  ///
+  /// Returns:
+  /// - JSON string with apply result or error object
+  ///
+  /// The returned JSON has two possible formats:
+  /// 1. Success: `{"success": true, "message": "...", "conflicts": []}`
+  /// 2. Error: `{"error": "error message"}`
+  ///
+  /// Memory is automatically freed after the call.
+  String applyPatch(String patch, String projectPath, {bool dryRun = false}) {
+    // Convert Dart strings to C strings
+    final patchPtr = patch.toNativeUtf8();
+    final projectPathPtr = projectPath.toNativeUtf8();
+
+    // Call Go function
+    final resultPtr = _applyPatch(patchPtr, projectPathPtr, dryRun ? 1 : 0);
+
+    // Convert C string to Dart string
+    final result = resultPtr.toDartString();
+
+    // Free memory
+    malloc.free(patchPtr);
+    malloc.free(projectPathPtr);
     _freeString(resultPtr);
 
     return result;

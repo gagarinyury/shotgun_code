@@ -853,6 +853,29 @@ class MockBackendBridge extends _i1.Mock implements _i11.BackendBridge {
           as String);
 
   @override
+  String applyPatch(
+    String? patch,
+    String? projectPath, {
+    bool? dryRun = false,
+  }) =>
+      (super.noSuchMethod(
+            Invocation.method(
+              #applyPatch,
+              [patch, projectPath],
+              {#dryRun: dryRun},
+            ),
+            returnValue: _i12.dummyValue<String>(
+              this,
+              Invocation.method(
+                #applyPatch,
+                [patch, projectPath],
+                {#dryRun: dryRun},
+              ),
+            ),
+          )
+          as String);
+
+  @override
   void dispose() => super.noSuchMethod(
     Invocation.method(#dispose, []),
     returnValueForMissingStub: null,
