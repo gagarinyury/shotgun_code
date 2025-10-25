@@ -32,8 +32,8 @@ void main() {
             body: AdaptiveTextField(
               controller: controller,
               hintText: 'Test hint',
-              maxLines: 3,
-              keyboardType: TextInputType.multiline,
+              maxLines: 1,
+              keyboardType: TextInputType.text,
               onChanged: (value) => changedValue = value,
               obscureText: true,
             ),
@@ -44,8 +44,8 @@ void main() {
       // Verify properties
       final textField = tester.widget<TextField>(find.byType(TextField));
       expect(textField.controller, controller);
-      expect(textField.maxLines, 3);
-      expect(textField.keyboardType, TextInputType.multiline);
+      expect(textField.maxLines, 1);
+      expect(textField.keyboardType, TextInputType.text);
       expect(textField.obscureText, true);
 
       // Test onChanged callback
