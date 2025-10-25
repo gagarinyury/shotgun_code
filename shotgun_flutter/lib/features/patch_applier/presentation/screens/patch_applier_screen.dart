@@ -3,6 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../domain/entities/patch.dart';
 import '../providers/patch_provider.dart';
+import '../../../../shared/services/haptic_service.dart';
+import '../../../../shared/services/share_service.dart';
 
 /// Screen for applying patches split from LLM-generated diffs
 class PatchApplierScreen extends ConsumerWidget {
@@ -17,6 +19,13 @@ class PatchApplierScreen extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Apply Patches'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.share),
+            tooltip: 'Share Patch',
+            onPressed: () => _sharePatch(diff),
+          ),
+        ],
       ),
       body: patchState.when(
         initial: () => Center(
@@ -32,9 +41,7 @@ class PatchApplierScreen extends ConsumerWidget {
             child: const Text('Load Patches'),
           ),
         ),
-        loading: () => const Center(
-          child: CircularProgressIndicator(),
-        ),
+        loading: () => const Center(child: CircularProgressIndicator()),
         loaded: (patches, isApplying, conflicts) => Column(
           children: [
             if (conflicts.isNotEmpty)
@@ -75,6 +82,11 @@ class PatchApplierScreen extends ConsumerWidget {
       ),
     );
   }
+
+  Future<void> _sharePatch(String patch) async {
+    await HapticService.lightImpact();
+    await ShareService.sharePatch(patch);
+  }
 }
 
 class _PatchCard extends StatelessWidget {
@@ -97,10 +109,7 @@ class _PatchCard extends StatelessWidget {
               children: [
                 Text(
                   patch.content,
-                  style: const TextStyle(
-                    fontFamily: 'monospace',
-                    fontSize: 12,
-                  ),
+                  style: const TextStyle(fontFamily: 'monospace', fontSize: 12),
                   maxLines: 10,
                   overflow: TextOverflow.ellipsis,
                 ),

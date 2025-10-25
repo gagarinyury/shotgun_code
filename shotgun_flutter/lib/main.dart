@@ -10,6 +10,7 @@ import 'shared/domain/entities/keyboard_shortcut.dart';
 import 'features/settings/presentation/screens/settings_screen.dart';
 import 'features/project_setup/presentation/providers/recent_projects_provider.dart'
     as project_setup;
+import 'core/performance/battery_optimizer.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -38,12 +39,20 @@ class MyApp extends ConsumerStatefulWidget {
 
 class _MyAppState extends ConsumerState<MyApp> {
   late final GoRouter _router;
+  final BatteryOptimizer _batteryOptimizer = BatteryOptimizer();
 
   @override
   void initState() {
     super.initState();
     _setupRouter();
     _registerShortcuts();
+    _batteryOptimizer.init();
+  }
+
+  @override
+  void dispose() {
+    _batteryOptimizer.dispose();
+    super.dispose();
   }
 
   void _setupRouter() {
@@ -104,6 +113,8 @@ class _MyAppState extends ConsumerState<MyApp> {
 
   @override
   Widget build(BuildContext context) {
+    final settings = _batteryOptimizer.getRecommendedSettings();
+
     return GlobalShortcutsWrapper(
       child: MaterialApp.router(
         title: 'Shotgun Code',
@@ -111,6 +122,17 @@ class _MyAppState extends ConsumerState<MyApp> {
         theme: ThemeData(
           useMaterial3: true,
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
+          pageTransitionsTheme: PageTransitionsTheme(
+            builders: settings.enableAnimations
+                ? const {
+                    TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
+                    TargetPlatform.android: FadeUpwardsPageTransitionsBuilder(),
+                  }
+                : const {
+                    TargetPlatform.iOS: NoAnimationPageTransitionsBuilder(),
+                    TargetPlatform.android: NoAnimationPageTransitionsBuilder(),
+                  },
+          ),
         ),
         builder: (context, child) {
           return Column(
@@ -304,5 +326,20 @@ class _ProjectSetupPlaceholderState
         ),
       ),
     );
+  }
+}
+
+class NoAnimationPageTransitionsBuilder extends PageTransitionsBuilder {
+  const NoAnimationPageTransitionsBuilder();
+
+  @override
+  Widget buildTransitions<T>(
+    PageRoute<T> route,
+    BuildContext context,
+    Animation<double> animation,
+    Animation<double> secondaryAnimation,
+    Widget child,
+  ) {
+    return child; // No animation
   }
 }

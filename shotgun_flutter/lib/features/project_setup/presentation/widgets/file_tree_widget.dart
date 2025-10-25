@@ -13,11 +13,15 @@ class FileTreeWidget extends StatefulWidget {
   /// Callback when a node's inclusion state is toggled.
   final Function(FileNode) onToggle;
 
+  /// Callback when refresh is triggered.
+  final VoidCallback? onRefresh;
+
   /// Creates a [FileTreeWidget].
   const FileTreeWidget({
     super.key,
     required this.nodes,
     required this.onToggle,
+    this.onRefresh,
   });
 
   @override
@@ -96,15 +100,23 @@ class _FileTreeWidgetState extends State<FileTreeWidget> {
         Expanded(
           child: filteredNodes.isEmpty
               ? const Center(child: Text('No files to display'))
-              : ListView.builder(
-                  itemCount: filteredNodes.length,
-                  itemBuilder: (context, index) {
-                    return _FileNodeTile(
-                      node: filteredNodes[index],
-                      onToggle: widget.onToggle,
-                      searchQuery: _searchQuery,
-                    );
+              : RefreshIndicator(
+                  onRefresh: () async {
+                    widget.onRefresh?.call();
+                    // Wait for refresh to complete
+                    await Future.delayed(const Duration(milliseconds: 500));
                   },
+                  child: ListView.builder(
+                    physics: const AlwaysScrollableScrollPhysics(),
+                    itemCount: filteredNodes.length,
+                    itemBuilder: (context, index) {
+                      return _FileNodeTile(
+                        node: filteredNodes[index],
+                        onToggle: widget.onToggle,
+                        searchQuery: _searchQuery,
+                      );
+                    },
+                  ),
                 ),
         ),
       ],

@@ -5,6 +5,8 @@ import '../providers/prompt_provider.dart';
 import '../widgets/prompt_viewer.dart';
 import '../widgets/task_editor.dart';
 import '../widgets/token_counter.dart';
+import '../../../../shared/services/haptic_service.dart';
+import '../../../../shared/services/share_service.dart';
 
 /// Screen for composing prompts with templates and token counting.
 ///
@@ -25,6 +27,22 @@ class PromptComposerScreen extends ConsumerWidget {
       appBar: AppBar(
         title: const Text('Compose Prompt'),
         elevation: 2,
+        actions: [
+          Consumer(
+            builder: (context, ref, child) {
+              final promptState = ref.watch(promptNotifierProvider);
+              return promptState.when(
+                data: (state) => IconButton(
+                  icon: const Icon(Icons.share),
+                  tooltip: 'Share Prompt',
+                  onPressed: () => _sharePrompt(state.finalPrompt),
+                ),
+                loading: () => const SizedBox.shrink(),
+                error: (_, __) => const SizedBox.shrink(),
+              );
+            },
+          ),
+        ],
       ),
       body: promptState.when(
         data: (state) => _buildContent(context, ref, state),
@@ -35,10 +53,7 @@ class PromptComposerScreen extends ConsumerWidget {
             children: [
               const Icon(Icons.error_outline, size: 48, color: Colors.red),
               const SizedBox(height: 16),
-              Text(
-                'Error: $error',
-                style: const TextStyle(color: Colors.red),
-              ),
+              Text('Error: $error', style: const TextStyle(color: Colors.red)),
             ],
           ),
         ),
@@ -99,10 +114,7 @@ class PromptComposerScreen extends ConsumerWidget {
           ),
         ),
         // Divider
-        Container(
-          width: 1,
-          color: Colors.grey[300],
-        ),
+        Container(width: 1, color: Colors.grey[300]),
         // Right side: Prompt viewer
         Expanded(
           child: Padding(
@@ -153,18 +165,34 @@ class PromptComposerScreen extends ConsumerWidget {
                   ),
                 ),
                 const SizedBox(height: 12),
-                SizedBox(
-                  width: double.infinity,
-                  child: ElevatedButton.icon(
-                    onPressed: state.finalPrompt.isNotEmpty
-                        ? () => _copyToClipboard(context, state.finalPrompt)
-                        : null,
-                    icon: const Icon(Icons.copy),
-                    label: const Text('Copy Prompt to Clipboard'),
-                    style: ElevatedButton.styleFrom(
-                      padding: const EdgeInsets.symmetric(vertical: 16),
+                Row(
+                  children: [
+                    Expanded(
+                      child: ElevatedButton.icon(
+                        onPressed: state.finalPrompt.isNotEmpty
+                            ? () => _copyToClipboard(context, state.finalPrompt)
+                            : null,
+                        icon: const Icon(Icons.copy),
+                        label: const Text('Copy Prompt'),
+                        style: ElevatedButton.styleFrom(
+                          padding: const EdgeInsets.symmetric(vertical: 16),
+                        ),
+                      ),
                     ),
-                  ),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: ElevatedButton.icon(
+                        onPressed: state.finalPrompt.isNotEmpty
+                            ? () => _sharePrompt(state.finalPrompt)
+                            : null,
+                        icon: const Icon(Icons.share),
+                        label: const Text('Share Prompt'),
+                        style: ElevatedButton.styleFrom(
+                          padding: const EdgeInsets.symmetric(vertical: 16),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
                 if (state.errorMessage != null)
                   Padding(
@@ -193,5 +221,12 @@ class PromptComposerScreen extends ConsumerWidget {
         duration: Duration(seconds: 2),
       ),
     );
+  }
+
+  Future<void> _sharePrompt(String prompt) async {
+    if (prompt.isEmpty) return;
+
+    await HapticService.lightImpact();
+    await ShareService.sharePrompt(prompt);
   }
 }
