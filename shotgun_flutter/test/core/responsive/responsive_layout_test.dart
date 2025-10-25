@@ -23,7 +23,7 @@ void main() {
 
     testWidgets('should show desktop widget on large screen', (tester) async {
       await tester.pumpWidget(
-        const MaterialApp(
+        MaterialApp(
           home: MediaQuery(
             data: const MediaQueryData(size: Size(1400, 900)),
             child: ResponsiveLayout(
@@ -40,7 +40,7 @@ void main() {
 
     testWidgets('should show tablet widget on medium screen', (tester) async {
       await tester.pumpWidget(
-        const MaterialApp(
+        MaterialApp(
           home: MediaQuery(
             data: const MediaQueryData(size: Size(800, 900)),
             child: ResponsiveLayout(
@@ -61,7 +61,7 @@ void main() {
       tester,
     ) async {
       await tester.pumpWidget(
-        const MaterialApp(
+        MaterialApp(
           home: MediaQuery(
             data: const MediaQueryData(size: Size(800, 900)),
             child: ResponsiveLayout(
