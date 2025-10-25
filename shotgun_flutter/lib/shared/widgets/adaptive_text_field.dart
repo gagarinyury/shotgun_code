@@ -44,7 +44,7 @@ class AdaptiveTextField extends StatelessWidget {
           vertical: isMobile ? 12 : 8,
         ),
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(isMobile ? 12 : 8),
+          borderRadius: BorderRadius.circular(isMobile ? 12 : 4),
         ),
       ),
     );

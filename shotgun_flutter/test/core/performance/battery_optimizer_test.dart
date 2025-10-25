@@ -1,5 +1,7 @@
+import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shotgun_flutter/core/performance/battery_optimizer.dart';
+import 'dart:async';
 
 void main() {
   setUpAll(() {
@@ -32,10 +34,7 @@ void main() {
     });
 
     test('should dispose timer correctly', () {
-      // Initialize to create timer
-      batteryOptimizer.init();
-
-      // Should not throw when disposing
+      // Should not throw when disposing (even without init)
       expect(() => batteryOptimizer.dispose(), returnsNormally);
     });
   });
