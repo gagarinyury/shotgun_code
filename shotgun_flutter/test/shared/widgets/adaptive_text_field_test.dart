@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shotgun_flutter/shared/widgets/adaptive_text_field.dart';
 
+// ignore_for_file: unnecessary_non_null_assertion
+
 void main() {
   setUpAll(() {
     TestWidgetsFlutterBinding.ensureInitialized();

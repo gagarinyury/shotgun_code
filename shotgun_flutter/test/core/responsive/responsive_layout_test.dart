@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shotgun_flutter/core/responsive/responsive_layout.dart';
 
+// ignore_for_file: unnecessary_const
+
 void main() {
   group('ResponsiveLayout', () {
     testWidgets('should show mobile widget on small screen', (tester) async {
