@@ -7,7 +7,7 @@ void main() {
   group('FileTreeWidget', () {
     testWidgets('should display file tree with nodes', (tester) async {
       final nodes = [
-        FileNode(
+        const FileNode(
           name: 'test.dart',
           path: '/test.dart',
           relPath: 'test.dart',
@@ -15,7 +15,7 @@ void main() {
           isGitignored: false,
           isCustomIgnored: false,
         ),
-        FileNode(
+        const FileNode(
           name: 'lib',
           path: '/lib',
           relPath: 'lib',
@@ -40,7 +40,7 @@ void main() {
 
     testWidgets('should filter nodes based on search query', (tester) async {
       final nodes = [
-        FileNode(
+        const FileNode(
           name: 'test.dart',
           path: '/test.dart',
           relPath: 'test.dart',
@@ -48,7 +48,7 @@ void main() {
           isGitignored: false,
           isCustomIgnored: false,
         ),
-        FileNode(
+        const FileNode(
           name: 'main.dart',
           path: '/main.dart',
           relPath: 'main.dart',
@@ -79,7 +79,7 @@ void main() {
       var refreshed = false;
 
       final nodes = [
-        FileNode(
+        const FileNode(
           name: 'test.dart',
           path: '/test.dart',
           relPath: 'test.dart',
@@ -126,7 +126,7 @@ void main() {
       FileNode? toggledNode;
 
       final nodes = [
-        FileNode(
+        const FileNode(
           name: 'test.dart',
           path: '/test.dart',
           relPath: 'test.dart',

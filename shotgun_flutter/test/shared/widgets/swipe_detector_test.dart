@@ -126,8 +126,8 @@ void main() {
       tester,
     ) async {
       await tester.pumpWidget(
-        MaterialApp(
-          home: Scaffold(body: SwipeDetector(child: const Text('Swipe me'))),
+        const MaterialApp(
+          home: Scaffold(body: SwipeDetector(child: Text('Swipe me'))),
         ),
       );
 

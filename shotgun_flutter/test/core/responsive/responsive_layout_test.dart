@@ -25,12 +25,12 @@ void main() {
 
     testWidgets('should show desktop widget on large screen', (tester) async {
       await tester.pumpWidget(
-        MaterialApp(
+        const MaterialApp(
           home: MediaQuery(
-            data: const MediaQueryData(size: Size(1400, 900)),
+            data: MediaQueryData(size: Size(1400, 900)),
             child: ResponsiveLayout(
-              mobile: const Text('Mobile'),
-              desktop: const Text('Desktop'),
+              mobile: Text('Mobile'),
+              desktop: Text('Desktop'),
             ),
           ),
         ),
@@ -42,13 +42,13 @@ void main() {
 
     testWidgets('should show tablet widget on medium screen', (tester) async {
       await tester.pumpWidget(
-        MaterialApp(
+        const MaterialApp(
           home: MediaQuery(
-            data: const MediaQueryData(size: Size(800, 900)),
+            data: MediaQueryData(size: Size(800, 900)),
             child: ResponsiveLayout(
-              mobile: const Text('Mobile'),
-              tablet: const Text('Tablet'),
-              desktop: const Text('Desktop'),
+              mobile: Text('Mobile'),
+              tablet: Text('Tablet'),
+              desktop: Text('Desktop'),
             ),
           ),
         ),
@@ -63,12 +63,12 @@ void main() {
       tester,
     ) async {
       await tester.pumpWidget(
-        MaterialApp(
+        const MaterialApp(
           home: MediaQuery(
-            data: const MediaQueryData(size: Size(800, 900)),
+            data: MediaQueryData(size: Size(800, 900)),
             child: ResponsiveLayout(
-              mobile: const Text('Mobile'),
-              desktop: const Text('Desktop'),
+              mobile: Text('Mobile'),
+              desktop: Text('Desktop'),
             ),
           ),
         ),
